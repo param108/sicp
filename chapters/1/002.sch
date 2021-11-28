@@ -83,4 +83,24 @@
 
   ;; main
   (cond ((< n 3) n)
-          (else (calc-iter 3 2 1 0))))
+        (else (calc-iter 3 2 1 0))))
+
+;;1.12
+;; pascals
+(define (pascals level)
+  ;; returns the first 2 elements of a list as a list
+  (define (car2 l)
+    (list (car l) (car (cdr l))))
+
+  ;; returns a list formed by taking the elements of input list 2 by 2 and adding them.
+  (define (pascals-sum l)
+    (cond
+     ((= (length l) 2) (list (+ (car l) (car (cdr l)))))
+     (else (append (pascals-sum (car2 l)) (pascals-sum (cdr l))))))
+
+  ;; main
+  ;; get the previous level and run pascals-sum on it and then add 1 to the front and end
+  (cond
+   ((= level 1) '(1))
+   ((= level 2) '(1 1))
+   (else (append '(1) (pascals-sum (pascals (- level 1))) '(1)))))
