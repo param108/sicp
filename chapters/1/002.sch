@@ -93,6 +93,8 @@
     (list (car l) (car (cdr l))))
 
   ;; returns a list formed by taking the elements of input list 2 by 2 and adding them.
+  ;; '(1 1) => '(2)
+  ;; '(1 2 1) => '(3 3)
   (define (pascals-sum l)
     (cond
      ((= (length l) 2) (list (+ (car l) (car (cdr l)))))
@@ -104,3 +106,22 @@
    ((= level 1) '(1))
    ((= level 2) '(1 1))
    (else (append '(1) (pascals-sum (pascals (- level 1))) '(1)))))
+
+;;1.16
+(define (exp b n)
+  (define (even? n)
+    (= (remainder n 2) 0))
+
+  (define (iter-exp v lb ln)
+    ;; if n is even square b and raise it to n/2
+    ;; if n is odd v -> v * b
+    ;;    b -> b * b
+    ;;    n -> (n - 1)/2
+    ;; final result when n = 1 is v * b
+    (cond ((= ln 1) (* v lb))
+          ((even? ln) (iter-exp v (* lb lb) (/ ln 2)))
+          (else (iter-exp (* lb v) (* lb lb) (/ (- ln 1) 2)))))
+  (cond
+   ((= n 0) 1)
+   ((= n 1) b)
+   (else (iter-exp 1 b n))))
