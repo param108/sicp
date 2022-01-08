@@ -23,14 +23,20 @@
 ;; the odd number at the end is thus (2n + 1)
 ;; as we need to multiply by 4 and divide by 2 we just multiply by 2
 (define (pi n)
-  (* 2 (+ (* 2 n) 1) (/ (product
-           (lambda (x) (* 2 x 2 x))
-           1
-           (lambda (x) (+ 1 x))
-           n)
-          (product
-           (lambda (x) (* (+ (* 2 x) 1) (+ (* 2 x) 1)))
-           1
-           (lambda (x) (+ 1 x))
-           n)))
+  (* 2 (+ (* 2 n) 1)
+     (/
+      ;; numerator
+      (product
+       (lambda (x) (* 2 x 2 x))
+       1
+       (lambda (x) (+ 1 x))
+       n)
+      ;; denominator
+      (product
+       (lambda (x) (* (+ (* 2 x) 1) (+ (* 2 x) 1)))
+       1
+       (lambda (x) (+ 1 x))
+       n)))
   )
+
+(display (exact->inexact (pi 1000)))
