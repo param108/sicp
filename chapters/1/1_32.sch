@@ -1,5 +1,5 @@
 ;; 1.32
-
+;; iterative
 (define (accumulate combiner null-value term a next b)
   (define (iter x acc)
     (if (> x b)
