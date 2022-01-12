@@ -41,6 +41,7 @@
   ;; hacky gcd function for test only.
   (define (gcd-one x y)
     (case x
+      ;; relative primes to 10
       ((3 7 9) #t)
       (else #f)))
 
