@@ -45,3 +45,22 @@
 (display "Product: ")
 (display (product 1 5))
 (newline)
+
+;; b
+;; recursive procedure
+
+(define (accumulate combiner null-value term a next b)
+  (define (impl a)
+    (if (> a b)
+        null-value
+        (combiner (term a) (impl (next a)))))
+  (impl a)
+  )
+
+(newline)
+(display "Sum: ")
+(display (sum 1 5))
+(newline)
+(display "Product: ")
+(display (product 1 5))
+(newline)
