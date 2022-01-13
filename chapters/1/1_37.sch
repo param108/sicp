@@ -51,5 +51,21 @@
 
 (display "euler")
 (newline)
-(display (euler 14))
+(display (+ 2 (euler 14)))
+(newline)
+
+;; 1.39
+;;
+(define (tan-cf x k)
+  (/ x (cont-frac
+   ;; n
+   (lambda (i) (- 0 (* x x)))
+   ;; d
+   (lambda (i) (- 1 (* 2 i)))
+   ;; k
+   k)))
+
+(display "lambert")
+(newline)
+(display (tan-cf (/ 3.14 4) 50))
 (newline)
