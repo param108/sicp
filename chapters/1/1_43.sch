@@ -5,6 +5,8 @@
   (lambda (x) (f (g x))))
 
 ;; recursive repeated
+;; f^n(x) = f(f^n-1(x))
+;; f^1(x) = f(x)
 (define (repeated f n)
   (define (iter i)
     (if (= i n)
@@ -16,6 +18,8 @@
   )
 
 ;; iterative repeated
+;; initially set acc to f
+;; at each iteration store acc = compose (acc f)
 (define (repeated-iter f n)
   (define (iter i acc)
     (if (= i n)
