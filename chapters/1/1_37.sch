@@ -67,5 +67,5 @@
 
 (display "lambert")
 (newline)
-(display (tan-cf (/ 3.14 4) 50))
+(display (tan-cf (/ 3.14 4) 50)) ;; tan(pi/4) ~= 1
 (newline)
