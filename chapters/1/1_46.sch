@@ -51,24 +51,24 @@
   ;; good-enough
   ;; Instead of passing this as a lambda, I extracted as function because it is so large
   (define (good-enough? x)
-       (cond
-        (first
-         ;; if its first there is no prev, so just set prev and return false.
-         ;; also set first to false to allow the code to know the first is complete.
-         (set! first #f)
-         (set! prev x)
-         #f)
-        (else
-         (let ((ret #f))
-           ;; if the difference between prev and x is less than tolerance then the guess
-           ;; is good enough
-           (if (< (abs (- prev x)) tolerance)
-               ;; less than tolerance
-               (set! ret #t)
-               ;; more than tolerance
-               (set! ret #f))
-           (set! prev x)
-           ret))))
+    (cond
+     (first
+      ;; if its first there is no prev, so just set prev and return false.
+      ;; also set first to false to allow the code to know the first is complete.
+      (set! first #f)
+      (set! prev x)
+      #f)
+     (else
+      (let ((ret #f))
+        ;; if the difference between prev and x is less than tolerance then the guess
+        ;; is good enough
+        (if (< (abs (- prev x)) tolerance)
+            ;; less than tolerance
+            (set! ret #t)
+            ;; more than tolerance
+            (set! ret #f))
+        (set! prev x)
+        ret))))
 
   ;; entry-point
   (iterative-improve
