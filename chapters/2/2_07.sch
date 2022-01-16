@@ -172,3 +172,90 @@
            ) (list (cons x y) (cons x1 y1) (cons x2 y2) (cons x3 y3) (cons x4 y4) (cons x5 y5)
                    (cons x6 y6) (cons x7 y7) (cons x8 y8)))
     ))
+
+;; 2.12
+;;
+(define (make-center-width c w)
+  (make-interval (- c w) (+ c w)))
+
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+(define (width i)
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+
+(define (make-center-percent c p)
+  (let ((w (/ (* c p) 100)))
+    (make-center-width c w)))
+
+(define (percent i)
+  (* (/ (width i) (center i)) 100))
+
+(display "2.12")
+(newline)
+(display (make-center-width 20 5))
+(newline)
+(display (make-center-percent 20 25)) ;; should be the same as above
+(newline)
+(display (percent (make-center-percent 20 25))) ;; 25
+
+
+;; 2.13
+;;
+;; consider two intervals (c1,w1) (c2, w2)
+;; the new interval limits on multiplication can be
+;; (c1+w1) * (c2+w2) = c1c2 + c1w2 + c2w1 + w2w1
+;; as w1 and w2 are very small w1*w2 can be ignored
+;;                   = c1c2 + c1w2 + c2w1
+;; replacing w2 and w1 with c2p2/100 and c1p1/100
+;;                   = c1c2 + c1c2p2/100 + c1c2p1/100
+;;                   = c1c2 + c1c2*(p1 + p2)/100
+;; so the new percentage tolerance is (p1 + p2)/100
+;; (c1+w1) * (c2-w2) = c1c2 - c1w2 + c2w1 -w1w2
+;; dropping w1w2 as it will be very small
+;;                   = c1c2 -c1c2p2/100 + c1c2p1/100
+;;                   = c1c2 + c1c2*(p1 -p2)/100
+;; (c1-w1) * (c2+w2)
+;; similarly         = c1c2 + c1c2*(p2 - p1)/100
+;; (c1-w1) * (c2-w2)
+;; similarly         = c1c2 - cic2*(p1 + p2)/100
+;;
+;; as p1 and p2 are always positive (p1 + p2) > (p1 - p2) and (p1 + p2) > (p2 - p1)
+;; Therefore the percentage in the final interval will be (p1 + p2)
+
+(define (par1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+
+(define (par2 r1 r2)
+  (let ((one (make-interval 1 1)))
+    (div-interval
+     one (add-interval (div-interval one r1)
+                       (div-interval one r2)))))
+
+(let ((r1 (make-interval 2.9 3)) (r2 (make-interval 3.9 4)))
+  (display "2.14===== experiment 1")
+  (newline)
+  (display (par1 r1 r2))
+  (newline)
+  (display (par2 r1 r2))
+  (newline))
+
+(let ((r1 (make-interval 2.5 3)) (r2 (make-interval 3.5 4)))
+  (display "2.14===== experiment 2")
+  (newline)
+  (display (par1 r1 r2))
+  (newline)
+  (display (par2 r1 r2))
+  (newline))
+
+;; So smaller the error the closer the two are. The reason for this is that par1 has
+;; many interval-interval calculations with uncertain numbers (widths > 0)
+;; which increases the width of the final. Where as par2 has interactions
+;; with certain numbers (i.e width 0) so the width will be much tighter.
+;; par2 is better because less interaction with uncertain numbers means the error width will be
+;; the least. Remember both are actually correct. One must be fully enclosed in the other.
+
+;; 2.16
+;; The differences are because each interaction between uncertain numbers modifies the center
+;; and the width. The operations on intervals are not a [field](https://en.wikipedia.org/wiki/Field_%28mathematics%29?%7B%7B%7Bqs%7D%7D%7D)
