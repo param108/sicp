@@ -18,3 +18,5 @@
 (newline)
 ;; 1 + 2x + 3 x^2; if x = 5 => 86
 (display (horner-eval 5 (list 1 2 3)))
+(newline)
+(display (horner-eval 2 (list 1 3 0 5 0 1))) ;; 79
