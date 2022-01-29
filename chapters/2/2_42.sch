@@ -114,3 +114,29 @@
 (display (queens 5))
 (newline)
 (display (queens 8))
+
+;; 2.43
+;;
+
+;; In Louis's implementation
+;; for every k you will call (queens (- k 1)) board-size times.
+;; In the correct implementation you do it once only.
+;; Similarly this continues for each level.
+;;
+;; to simplify the extra time calculation,
+;; let us suppose that the time required to calculate (queens k) is simply
+;; the time required to calculate (queens (- k 1)) + t which is a fixed time.
+;; Similarly (queens 0) takes t time.
+;; so the total time becomes
+;; ((t*k+t)k +t)k..
+;; 9t*8 + t
+;; 73t*8 + t
+(define (total-time k)
+  (define (iter x val)
+    (if (= x 0)
+        val
+        (iter (- x 1) (+ 1 (* k val)))))
+  (iter k 1))
+
+(newline)
+(display (total-time 8)) ;; 19173961 which is very close to 8^8 (16777216) for a board size of 8
